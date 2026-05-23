@@ -32,34 +32,30 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const ENDPOINT = "https://hypercart-backend-production.up.railway.app";
-export let socket;
+export const socket = io(ENDPOINT);
 
 function App() {
   const { user } = useSelector(state => state.auth);
 
   useEffect(() => {
-    socket = io(ENDPOINT);
-
     if (user && user.role === 'vendor') {
       socket.emit('setup', user);
       
-      socket.on('new_order', (data) => {
+      const handleNewOrder = (data) => {
         toast.success(data.message || 'You have a new order!', {
           duration: 5000,
           position: 'top-right',
-          style: {
-            background: '#0F3460',
-            color: '#fff',
-            fontWeight: 'bold'
-          },
+          style: { background: '#0F3460', color: '#fff', fontWeight: 'bold' },
           icon: '🎉',
         });
-      });
+      };
+      
+      socket.on('new_order', handleNewOrder);
+      
+      return () => {
+        socket.off('new_order', handleNewOrder);
+      };
     }
-
-    return () => {
-      socket.disconnect();
-    };
   }, [user]);
 
   return (

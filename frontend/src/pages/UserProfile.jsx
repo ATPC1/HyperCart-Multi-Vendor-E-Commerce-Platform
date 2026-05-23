@@ -93,7 +93,7 @@ export default function UserProfile() {
       <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">
         <div className="flex items-center gap-5 mb-8 pb-8 border-b border-gray-100">
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-navy to-electric text-white flex items-center justify-center text-2xl font-black shadow-md">
-            {user.name.charAt(0).toUpperCase()}
+            {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
           </div>
           <div>
             <p className="text-xl font-bold text-navy">{user.name}</p>
