@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../store/slices/productSlice';
+import { fetchProducts, updateProductStockLive } from '../store/slices/productSlice';
+import { socket } from '../App';
 import ProductCard from '../components/common/ProductCard';
 import { Loader2, SlidersHorizontal, X, ChevronDown } from 'lucide-react';
 import { useSearchParams, Link } from 'react-router-dom';
@@ -34,6 +35,15 @@ export default function ProductList() {
     params.set('maxPrice', priceRange);
     dispatch(fetchProducts(params.toString()));
   }, [dispatch, keyword, category, priceRange]);
+
+  useEffect(() => {
+    if (!socket) return;
+    const handleStockUpdate = (updates) => {
+      dispatch(updateProductStockLive(updates));
+    };
+    socket.on('stock_update', handleStockUpdate);
+    return () => socket.off('stock_update', handleStockUpdate);
+  }, [dispatch]);
 
   // Client-side sort
   const products = [...rawProducts].sort((a, b) => {

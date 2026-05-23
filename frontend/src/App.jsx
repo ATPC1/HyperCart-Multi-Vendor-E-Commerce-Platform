@@ -32,7 +32,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const ENDPOINT = "https://hypercart-backend-production.up.railway.app";
-let socket;
+export let socket;
 
 function App() {
   const { user } = useSelector(state => state.auth);

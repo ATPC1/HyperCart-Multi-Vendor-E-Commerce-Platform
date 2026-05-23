@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+const Product = require('../models/Product');
 const Razorpay = require('razorpay');
 const sendEmail = require('../utils/sendEmail');
 
@@ -31,8 +32,25 @@ const addOrderItems = async (req, res) => {
 
       const createdOrder = await order.save();
 
+      // Reduce product stock
+      const stockUpdates = [];
+      for (const item of orderItems) {
+        const product = await Product.findById(item.product);
+        if (product) {
+          product.stock = Math.max(0, product.stock - item.qty);
+          await product.save();
+          stockUpdates.push({ productId: product._id, newStock: product.stock });
+        }
+      }
+
       // Emit socket event to vendors
       const io = req.app.get('io');
+      
+      // Global stock update event
+      if (stockUpdates.length > 0) {
+        io.emit('stock_update', stockUpdates);
+      }
+
       const vendors = [...new Set(orderItems.map(item => item.vendor))];
       vendors.forEach(vendorId => {
         if (vendorId) {

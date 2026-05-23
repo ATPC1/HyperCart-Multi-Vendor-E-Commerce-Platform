@@ -74,7 +74,15 @@ const productSlice = createSlice({
     reviewError: null,
     reviewSuccess: false,
   },
-  reducers: {},
+  reducers: {
+    updateProductStockLive: (state, action) => {
+      const updates = action.payload;
+      updates.forEach(update => {
+        const item = state.items.find(p => p._id === update.productId);
+        if (item) item.stock = update.newStock;
+      });
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => { state.loading = true; })
@@ -121,4 +129,5 @@ const productSlice = createSlice({
   },
 });
 
+export const { updateProductStockLive } = productSlice.actions;
 export default productSlice.reducer;

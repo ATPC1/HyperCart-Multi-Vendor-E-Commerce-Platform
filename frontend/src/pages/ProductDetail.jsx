@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../store/slices/cartSlice';
 import { createProductReview } from '../store/slices/productSlice';
 import axios from 'axios';
+import { socket } from '../App';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -41,6 +42,18 @@ export default function ProductDetail() {
       setComment('');
     }
   }, [reviewSuccess]);
+
+  useEffect(() => {
+    if (!socket || !product) return;
+    const handleStockUpdate = (updates) => {
+      const update = updates.find(u => u.productId === product._id);
+      if (update) {
+        setProduct(prev => ({ ...prev, stock: update.newStock }));
+      }
+    };
+    socket.on('stock_update', handleStockUpdate);
+    return () => socket.off('stock_update', handleStockUpdate);
+  }, [product]);
 
   const submitHandler = (e) => {
     e.preventDefault();
