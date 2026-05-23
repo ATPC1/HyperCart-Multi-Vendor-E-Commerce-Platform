@@ -21,7 +21,7 @@ export default function AdminCoupons() {
 
   const fetchCoupons = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5001/api/coupons', cfg);
+      const { data } = await axios.get('https://hypercart-backend-production.up.railway.app/api/coupons', cfg);
       setCoupons(data);
     } catch { toast.error('Failed to load coupons'); }
     finally { setLoading(false); }
@@ -33,7 +33,7 @@ export default function AdminCoupons() {
     e.preventDefault();
     setCreating(true);
     try {
-      await axios.post('http://localhost:5001/api/coupons', {
+      await axios.post('https://hypercart-backend-production.up.railway.app/api/coupons', {
         code, discountType, discountValue: Number(discountValue),
         minOrderAmount: Number(minOrderAmount),
         expiresAt: expiresAt || undefined,
@@ -49,7 +49,7 @@ export default function AdminCoupons() {
 
   const handleToggle = async (id) => {
     try {
-      const { data } = await axios.put(`http://localhost:5001/api/coupons/${id}/toggle`, {}, cfg);
+      const { data } = await axios.put(`https://hypercart-backend-production.up.railway.app/api/coupons/${id}/toggle`, {}, cfg);
       setCoupons((prev) => prev.map((c) => (c._id === id ? data : c)));
     } catch { toast.error('Failed to toggle'); }
   };
@@ -57,7 +57,7 @@ export default function AdminCoupons() {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this coupon?')) return;
     try {
-      await axios.delete(`http://localhost:5001/api/coupons/${id}`, cfg);
+      await axios.delete(`https://hypercart-backend-production.up.railway.app/api/coupons/${id}`, cfg);
       setCoupons((prev) => prev.filter((c) => c._id !== id));
       toast.success('Coupon deleted');
     } catch { toast.error('Failed to delete'); }

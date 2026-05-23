@@ -30,7 +30,7 @@ function ProductModal({ mode, product, onClose, onSave }) {
       formData.append('image', imageFile);
       setUploading(true);
       try {
-        const { data } = await axios.post('http://localhost:5001/api/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+        const { data } = await axios.post('https://hypercart-backend-production.up.railway.app/api/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
         imageUrl = data.imageUrl;
       } catch { toast.error('Image upload failed'); setUploading(false); return; }
       setUploading(false);

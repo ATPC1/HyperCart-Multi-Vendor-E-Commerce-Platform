@@ -23,7 +23,7 @@ export default function ProductDetail() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5001/api/products/${id}`);
+        const { data } = await axios.get(`https://hypercart-backend-production.up.railway.app/api/products/${id}`);
         setProduct(data);
         setLoading(false);
       } catch (err) {

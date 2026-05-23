@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5001/api/admin';
+const API_URL = 'https://hypercart-backend-production.up.railway.app/api/admin';
 
 const getConfig = (thunkAPI) => {
   const token = thunkAPI.getState().auth.user?.token;

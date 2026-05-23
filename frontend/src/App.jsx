@@ -31,7 +31,7 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-const ENDPOINT = "http://localhost:5001";
+const ENDPOINT = "https://hypercart-backend-production.up.railway.app";
 let socket;
 
 function App() {

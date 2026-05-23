@@ -143,7 +143,7 @@ export default function Checkout() {
 
       // 1. Get Razorpay order id from backend
       const { data } = await axios.post(
-        'http://localhost:5001/api/orders/razorpay',
+        'https://hypercart-backend-production.up.railway.app/api/orders/razorpay',
         { amount: total },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -519,7 +519,7 @@ export default function Checkout() {
                     onClick={async () => {
                       setCouponLoading(true);
                       try {
-                        const { data } = await axios.post('http://localhost:5001/api/coupons/apply',
+                        const { data } = await axios.post('https://hypercart-backend-production.up.railway.app/api/coupons/apply',
                           { code: couponCode, orderAmount: subtotal + tax },
                           { headers: { Authorization: `Bearer ${user.token}` } }
                         );
